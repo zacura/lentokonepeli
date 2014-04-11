@@ -1,24 +1,34 @@
 function init(){
     var game = new Phaser.Game(800,490,Phaser.AUTO,'viewport');
-    
+
+    myAudio = new Audio('./AUDIO/bg_sound.wav'); 
+    myAudio.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+    myAudio.play();
     // Creates a new 'main' state that will contain the game
     var main_state = {
         preload: function() { 
             // Function called first to load all the assets
             // Change the background color of the game
-            this.game.stage.backgroundColor = '#71c5cf';
+            this.game.stage.backgroundColor = '#bbe3e8';
             
             // Load the bird sprite
             this.game.load.image('rollator', './IMG/rollator2.png');
-            this.game.load.image('pipe','./IMG/pill.png');
+            this.game.load.image('pill','./IMG/pill.png');
+            this.game.load.image('bg_clouds','./IMG/bg_clouds.png');
         },
         create: function() { 
             // Fuction called after 'preload' to setup the game
             // Display the bird on the screen
+            
+            this.bg_clouds = game.add.sprite(0, 0, 'bg_clouds');
             this.bird = this.game.add.sprite(100, 245, 'rollator');
             
             this.pipes = game.add.group();  
-            this.pipes.createMultiple(20, 'pipe');
+            this.pipes.createMultiple(20, 'pill');
+            
             
             // Add gravity to the bird to make it fall
             this.bird.body.gravity.y = 1000;
@@ -37,10 +47,17 @@ function init(){
         update: function() {
             // Function called 60 times per second
             // If the bird is out of the world (too high or too low), call the 'restart_game' function
+            if (this.bg_clouds.x <-700) {
+                this.bg_clouds.x = 0;
+            }
+            else{
+                this.bg_clouds.x -=1;
+            }
+            
             if (this.bird.inWorld == false)
             this.restart_game();
             
-            this.game.physics.overlap(this.bird, this.pipes, this.restart_game, null, this);  
+            this.game.physics.overlap(this.bird, this.pipes, this.restart_game, null, this);
         },
             
         jump: function() {  
@@ -52,7 +69,8 @@ function init(){
         restart_game: function() {  
             // Start the 'main' state, which restarts the game
             this.game.state.start('main');
-            this.game.time.events.remove(this.timer);  
+            this.game.time.events.remove(this.timer);
+            myAudio.currentTime = 0;
         },
         
         add_one_pipe: function(x, y) {  
