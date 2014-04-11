@@ -7,6 +7,12 @@
     <script src="./JS/phaser.min.js"></script>
     <script src="./JS/main.js"></script>
     <script>
+        myAudio = new Audio('./AUDIO/bg_sound.ogg'); 
+        myAudio.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
+        
         $(document).ready(function (){
             var width = 0;
             $("#viewport").css({ marginLeft:window.innerWidth/2-400+"px"});

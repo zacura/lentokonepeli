@@ -1,12 +1,6 @@
 function init(){
     var game = new Phaser.Game(800,490,Phaser.AUTO,'viewport');
 
-    myAudio = new Audio('./AUDIO/bg_sound.wav'); 
-    myAudio.addEventListener('ended', function() {
-        this.currentTime = 0;
-        this.play();
-    }, false);
-    myAudio.play();
     // Creates a new 'main' state that will contain the game
     var main_state = {
         preload: function() { 
@@ -15,7 +9,7 @@ function init(){
             this.game.stage.backgroundColor = '#bbe3e8';
             
             // Load the bird sprite
-            this.game.load.image('rollator', './IMG/rollator2.png');
+            this.game.load.image('rollator', './IMG/senior_65px.png');
             this.game.load.image('pill','./IMG/pill.png');
             this.game.load.image('bg_clouds','./IMG/bg_clouds.png');
         },
@@ -41,7 +35,8 @@ function init(){
             
             this.score = 0;  
             var style = { font: "30px Arial", fill: "#ffffff" };  
-            this.label_score = this.game.add.text(20, 20, "0", style); 
+            this.label_score = this.game.add.text(20, 20, "0", style);
+            myAudio.play();
         },
     
         update: function() {
